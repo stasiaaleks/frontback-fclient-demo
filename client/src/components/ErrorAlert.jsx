@@ -1,0 +1,10 @@
+// Bootstrap's dismissible alert without bootstrap.js: React owns the visibility
+export default function ErrorAlert({ message, onClose }) {
+  if (!message) return null;
+  return (
+    <div className="alert alert-danger alert-dismissible" role="alert">
+      {message}
+      {onClose && <button type="button" className="btn-close" aria-label="Close" onClick={onClose} />}
+    </div>
+  );
+}
