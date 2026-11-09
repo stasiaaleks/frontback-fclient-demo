@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Kill la Kill: Maximum Volume, Zero Restraint",
+    "author": "Anastasiia Aleksieienko",
+    "content": "Studio Trigger's breakout series turns school-uniform battles into a loud, self-aware celebration of over-the-top action.",
+    "tags": [
+      "review",
+      "trigger",
+      "action"
+    ],
+    "status": "published"
+  },
+  {
+    "title": "Samurai Champloo and the Hip-Hop Edo Period",
+    "author": "Oleksandr Morzynsky",
+    "content": "Shinichiro Watanabe mixes a samurai road trip with lo-fi beats and scratching, and somehow the anachronism just works.",
+    "tags": [
+      "review",
+      "classic",
+      "music"
+    ],
+    "status": "published"
+  },
+  {
+    "title": "JoJo's Bizarre Adventure: A Guide to the Parts",
+    "author": "Daria Talavira",
+    "content": "Each part follows a new JoJo with a new setting and art style, so knowing where to start matters more than you might think.",
+    "tags": [
+      "guide",
+      "shonen",
+      "jojo"
+    ],
+    "status": "draft"
+  },
+  {
+    "title": "SK8 the Infinity: Skateboarding as Pure Joy",
+    "author": "Pavlo Kolinko",
+    "content": "Bright colours, absurd downhill races and a sincere friendship at its core make SK8 one of Studio Bones' most fun originals.",
+    "tags": [
+      "review",
+      "sports",
+      "bones"
+    ],
+    "status": "archived"
+  },
+  {
+    "title": "Dan Da Dan: Aliens, Ghosts and Teenage Chaos",
+    "author": "Yegor Reznichenko",
+    "content": "Science Saru blends yokai horror, UFO conspiracies and a romcom into one of the most energetic adaptations in years.",
+    "tags": [
+      "review",
+      "supernatural",
+      "science-saru"
+    ],
+    "status": "draft"
+  }
+]
