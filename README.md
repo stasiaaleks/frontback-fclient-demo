@@ -2,7 +2,7 @@
 
 A small articles site. Anyone can read published articles; logged-in users manage them in an admin panel. The page updates by itself when someone adds or changes an article — no refresh needed.
 
-Built with React and Bootstrap in the browser, Node.js, Express and MongoDB on the server. The API can still be tested with Postman.
+Built with React and Bootstrap in the browser, Node.js, Express and MongoDB on the server. The API can be tested with Postman.
 
 ## Getting started
 
@@ -30,7 +30,7 @@ make build && make start
 
 `make seed` creates two accounts, an admin and an editor. Their usernames and passwords are taken from `.env` (`ADMIN_*` and `EDITOR_*`). Log in as each in two different browsers to see how locking works.
 
-## How it works
+## Business logic
 
 **Reading.** Visitors see only published articles. Drafts, archived articles and lock details are visible only after logging in.
 
@@ -38,7 +38,7 @@ make build && make start
 
 **Locking.** Two people can't change the same article at once. Before a change the article is locked by the current user; anyone else gets an error until the lock is released or expires (5 minutes by default). The admin panel does this for you: clicking Edit locks the article, Save or Cancel releases it.
 
-**Live updates.** When something changes, the server notifies every open page and the page reloads its data. The notification itself carries no data, so visitors learn nothing about drafts.
+**Live updates.** Each page keeps a Server-Sent Events connection to `/api/events` open; when something changes, the server sends an event over it and the page reloads its data. The notification itself carries no data, so visitors learn nothing about drafts.
 
 ## Security
 
