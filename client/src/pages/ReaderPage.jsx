@@ -21,7 +21,7 @@ export default function ReaderPage() {
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {published.map((article) => (
           <div className="col" key={article._id}>
-            <div className="card h-100 shadow-sm">
+            <div className="card h-100">
               <div className="card-body">
                 <h2 className="card-title h5">
                   <Link to={`/articles/${article._id}`} className="stretched-link text-decoration-none">{article.title}</Link>

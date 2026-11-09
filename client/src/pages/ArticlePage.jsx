@@ -15,7 +15,7 @@ export default function ArticlePage() {
       {error && <ErrorAlert message={error} />}
       {!error && !article && <Spinner />}
       {article && (
-        <article className="card shadow-sm">
+        <article className="card">
           <div className="card-body">
             <h1 className="card-title h3">
               {article.title} {article.status !== 'published' && <StatusBadge status={article.status} />}

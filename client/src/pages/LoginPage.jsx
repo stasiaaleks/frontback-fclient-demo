@@ -25,7 +25,7 @@ export default function LoginPage() {
   return (
     <div className="row justify-content-center">
       <div className="col-sm-8 col-md-5 col-lg-4">
-        <div className="card shadow-sm">
+        <div className="card">
           <div className="card-body">
             <h1 className="h4 mb-3">Log in</h1>
             <ErrorAlert message={error} onClose={() => setError(null)} />

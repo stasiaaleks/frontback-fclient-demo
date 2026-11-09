@@ -21,10 +21,10 @@ async function withLock(id, action) {
 }
 
 const ACTIONS = {
-  draft: [{ label: 'Publish', run: api.publish, style: 'success' }],
+  draft: [{ label: 'Publish', run: api.publish }],
   published: [
-    { label: 'Unpublish', run: api.unpublish, style: 'secondary' },
-    { label: 'Archive', run: api.archive, style: 'dark' }
+    { label: 'Unpublish', run: api.unpublish },
+    { label: 'Archive', run: api.archive }
   ],
   archived: []
 };
@@ -93,14 +93,14 @@ export default function AdminPage() {
       <ErrorAlert message={error} onClose={() => setError(null)} />
 
       {creating && (
-        <div className="card card-body mb-4 shadow-sm">
+        <div className="card card-body mb-4">
           <h2 className="h5">New draft</h2>
           <ArticleForm initial={{ author: user.username }} submitLabel="Create" onSubmit={create} onCancel={() => setCreating(false)} />
         </div>
       )}
 
       {editing && (
-        <div className="card card-body mb-4 shadow-sm border-primary">
+        <div className="card card-body mb-4 border-primary">
           <h2 className="h5">Editing &ldquo;{editing.title}&rdquo;</h2>
           {/* key resets the form if another article is opened */}
           <ArticleForm key={editing._id} initial={editing} submitLabel="Save" onSubmit={saveEdit} onCancel={cancelEdit} />
@@ -127,15 +127,15 @@ export default function AdminPage() {
                 <td>{article.author}</td>
                 <td><StatusBadge status={article.status} /></td>
                 <td className="text-end text-nowrap">
-                  <div className="btn-group btn-group-sm">
+                  <div className="d-inline-flex gap-1">
                     {article.status === 'draft' && (
-                      <button className="btn btn-outline-primary" disabled={Boolean(editing)} onClick={() => startEdit(article._id)}>Edit</button>
+                      <button className="btn btn-sm btn-outline-secondary" disabled={Boolean(editing)} onClick={() => startEdit(article._id)}>Edit</button>
                     )}
-                    {ACTIONS[article.status].map(({ label, run, style }) => (
-                      <button key={label} className={`btn btn-outline-${style}`} disabled={article._id === editingId}
+                    {ACTIONS[article.status].map(({ label, run }) => (
+                      <button key={label} className="btn btn-sm btn-outline-secondary" disabled={article._id === editingId}
                         onClick={() => attempt(() => withLock(article._id, run))}>{label}</button>
                     ))}
-                    <button className="btn btn-outline-danger" disabled={article._id === editingId} onClick={() => remove(article)}>Delete</button>
+                    <button className="btn btn-sm btn-link text-danger text-decoration-none" disabled={article._id === editingId} onClick={() => remove(article)}>Delete</button>
                   </div>
                 </td>
               </tr>
