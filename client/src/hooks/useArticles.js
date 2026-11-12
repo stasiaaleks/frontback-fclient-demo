@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { api, ARTICLES_CHANGED, EVENTS_URL } from '../api.js';
+import { useCallback, useEffect, useState } from 'react';
+import { api } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 // Loads data, then reloads it whenever the server announces a change over SSE.
@@ -8,40 +8,32 @@ function useLiveData(load) {
   const { user } = useAuth();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  // Responses can arrive out of order (several events in a row, or the id changed),
-  // so only the latest request may update state
-  const latestRequest = useRef(0);
-
-  const reload = useCallback(async () => {
-    const request = ++latestRequest.current;
-    try {
-      const result = await load();
-      if (request !== latestRequest.current) return;
-      setData(result);
-      setError(null);
-    } catch (err) {
-      if (request !== latestRequest.current) return;
-      setData(null);
-      setError(err.message);
-    }
-  }, [load]);
 
   useEffect(() => {
+    // Responses can arrive out of order, so only the latest request of this effect may update state;
+    // cleanup bumps the counter so answers from before it (e.g. the previous id) are ignored too
+    let latest = 0;
+    const reload = async () => {
+      const request = ++latest;
+      try {
+        const result = await load();
+        if (request === latest) { setData(result); setError(null); }
+      } catch (err) {
+        if (request === latest) { setData(null); setError(err.message); }
+      }
+    };
+
     reload();
-  }, [reload, user]);
-
-  useEffect(() => {
-    // EventSource reconnects by itself if the connection drops;
-    // re-fetch on every (re)connect, since events sent while offline are lost
-    const source = new EventSource(EVENTS_URL);
+    // EventSource reconnects by itself
+    // re-fetch on every reconnect, events sent while offline are lost
+    const source = new EventSource('/api/events');
     source.onopen = reload;
-    source.addEventListener(ARTICLES_CHANGED, reload);
+    source.addEventListener('articles-changed', reload);
     return () => {
       source.close();
-      // Answers to requests from before cleanup (e.g. the previous id) are now stale
-      latestRequest.current++;
+      latest++;
     };
-  }, [reload]);
+  }, [load, user]);
 
   return { data, error };
 }

@@ -1,5 +1,4 @@
 // The only place that talks to the server. Every call:
-// - sends the session cookie (same origin)
 // - adds X-Requested-With, which the server requires on mutations (CSRF guard)
 // - throws an Error carrying the server's { error } message
 async function request(method, path, body) {
@@ -9,8 +8,7 @@ async function request(method, path, body) {
   const res = await fetch(`/api${path}`, {
     method,
     headers,
-    credentials: 'same-origin',
-    body: body === undefined ? undefined : JSON.stringify(body)
+    body: JSON.stringify(body)
   });
 
   if (res.status === 204) return null;
@@ -38,6 +36,3 @@ export const api = {
   unpublish: (id) => request('POST', articlePath(id, '/unpublish')),
   archive: (id) => request('POST', articlePath(id, '/archive'))
 };
-
-export const EVENTS_URL = '/api/events';
-export const ARTICLES_CHANGED = 'articles-changed';

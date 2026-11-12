@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 const toForm = (article) => ({
-  title: article?.title ?? '',
-  author: article?.author ?? '',
-  content: article?.content ?? '',
-  tags: article?.tags?.join(', ') ?? ''
+  title: article.title ?? '',
+  author: article.author ?? '',
+  content: article.content ?? '',
+  tags: article.tags?.join(', ') ?? ''
 });
 
 // "a, b ,, c" -> ["a", "b", "c"]
@@ -42,7 +42,7 @@ export default function ArticleForm({ initial, submitLabel, onSubmit, onCancel }
       <input className="form-control mb-3" placeholder="Tags, comma separated" value={form.tags} onChange={change('tags')} />
       <div className="d-flex gap-2">
         <button type="submit" className="btn btn-primary" disabled={saving}>{submitLabel}</button>
-        {onCancel && <button type="button" className="btn btn-outline-secondary" onClick={onCancel} disabled={saving}>Cancel</button>}
+        <button type="button" className="btn btn-outline-secondary" onClick={onCancel} disabled={saving}>Cancel</button>
       </div>
     </form>
   );

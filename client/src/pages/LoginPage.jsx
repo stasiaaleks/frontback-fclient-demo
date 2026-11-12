@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate } from 'react-router';
 import { useAuth } from '../context/AuthContext.jsx';
 import ErrorAlert from '../components/ErrorAlert.jsx';
 
 export default function LoginPage() {
   const { user, login } = useAuth();
-  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -16,7 +15,6 @@ export default function LoginPage() {
     event.preventDefault();
     try {
       await login(username, password);
-      navigate('/admin');
     } catch (err) {
       setError(err.message);
     }

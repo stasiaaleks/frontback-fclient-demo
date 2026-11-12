@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { api } from '../api.js';
 
 const AuthContext = createContext(null);
@@ -16,19 +16,19 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = useCallback(async (username, password) => {
+  const login = async (username, password) => {
     const data = await api.login(username, password);
     setUser(data.user);
-  }, []);
+  };
 
-  const logout = useCallback(async () => {
+  const logout = async () => {
     try {
       await api.logout();
     } finally {
       // Even if the request fails, the user asked to be logged out locally
       setUser(null);
     }
-  }, []);
+  };
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout }}>
