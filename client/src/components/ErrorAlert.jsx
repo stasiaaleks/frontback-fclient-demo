@@ -1,4 +1,3 @@
-// Bootstrap's dismissible alert without bootstrap.js: React owns the visibility
 export default function ErrorAlert({ message, onClose }) {
   if (!message) return null;
   return (

@@ -10,8 +10,6 @@ const toForm = (article) => ({
 // "a, b ,, c" -> ["a", "b", "c"]
 const parseTags = (text) => text.split(',').map((tag) => tag.trim()).filter(Boolean);
 
-// Used both for creating and editing
-// parent decides what Save and Cancel do
 export default function ArticleForm({ initial, submitLabel, onSubmit, onCancel }) {
   const [form, setForm] = useState(() => toForm(initial));
   const [saving, setSaving] = useState(false);

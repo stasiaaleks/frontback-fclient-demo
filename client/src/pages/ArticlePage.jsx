@@ -24,7 +24,7 @@ export default function ArticlePage() {
               {article.author}
               {article.publishedAt && <> &middot; {formatDate(article.publishedAt)}</>}
             </p>
-            {/* Rendered as text, never as HTML, so stored content can't inject scripts */}
+            {/* plain text, not HTML - no XSS */}
             <p className="card-text" style={{ whiteSpace: 'pre-wrap' }}>{article.content}</p>
             <TagBadges tags={article.tags} />
           </div>

@@ -1,6 +1,4 @@
-// The only place that talks to the server. Every call:
-// - adds X-Requested-With, which the server requires on mutations (CSRF guard)
-// - throws an Error carrying the server's { error } message
+// X-Requested-With is required by the server's CSRF check
 async function request(method, path, body) {
   const headers = { 'X-Requested-With': 'XMLHttpRequest' };
   if (body !== undefined) headers['Content-Type'] = 'application/json';

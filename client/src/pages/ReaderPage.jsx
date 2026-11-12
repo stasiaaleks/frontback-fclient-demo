@@ -11,7 +11,7 @@ export default function ReaderPage() {
   if (error) return <ErrorAlert message={error} />;
   if (!articles) return <Spinner />;
 
-  // Logged-in users get every status from the API; the reader view shows only published ones
+  // logged-in users get all statuses, show only published here
   const published = articles.filter((article) => article.status === 'published');
 
   return (

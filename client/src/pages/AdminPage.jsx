@@ -8,8 +8,7 @@ import ArticleForm from '../components/ArticleForm.jsx';
 import ErrorAlert from '../components/ErrorAlert.jsx';
 import Spinner from '../components/Spinner.jsx';
 
-// The server only lets the lock holder change an article, and a successful change releases the lock.
-// One-click actions therefore lock first; if the action fails, the lock is given back.
+// only the lock owner can change an article, so lock first and unlock if it fails
 async function withLock(id, action) {
   await api.lock(id);
   try {
@@ -36,7 +35,7 @@ export default function AdminPage() {
   const [creating, setCreating] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
-  // Runs an API call and shows its error; the list itself refreshes through SSE
+  // the list refreshes via SSE, so just show errors
   const attempt = async (fn) => {
     try {
       setError(null);
@@ -52,14 +51,14 @@ export default function AdminPage() {
     if (await attempt(() => api.createArticle(fields))) setCreating(false);
   };
 
-  // Editing holds the lock while the form is open, so nobody else can change the article meanwhile
+  // keep the lock while the form is open
   const startEdit = (id) => attempt(async () => {
     await api.lock(id);
     setEditingId(id);
   });
 
   const saveEdit = async (fields) => {
-    // Renew the lock first (allowed for the owner), so a save after the lock TTL still works
+    // renew the lock in case it expired while editing
     const saved = await attempt(async () => {
       await api.lock(editingId);
       await api.updateArticle(editingId, fields);
@@ -102,7 +101,6 @@ export default function AdminPage() {
       {editing && (
         <div className="card card-body mb-4 border-primary">
           <h2 className="h5">Editing &ldquo;{editing.title}&rdquo;</h2>
-          {/* key resets the form if another article is opened */}
           <ArticleForm key={editing._id} initial={editing} submitLabel="Save" onSubmit={saveEdit} onCancel={cancelEdit} />
         </div>
       )}
