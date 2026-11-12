@@ -5,8 +5,7 @@ import HttpError from '../errors/httpError.js';
 
 const isNonEmptyString = (value) => typeof value === 'string' && value.trim() !== '';
 
-// Compared against when the username doesn't exist, so a wrong username
-// takes as long as a wrong password and doesn't reveal which users exist
+// used for unknown usernames so timing doesn't reveal which users exist
 const DUMMY_HASH = bcrypt.hashSync('not-a-real-password', 10);
 
 class AuthService {
@@ -14,7 +13,7 @@ class AuthService {
     this.repository = new UserRepository();
   }
 
-  // Returns only what goes into the session, never the password hash
+  // only what goes into the session, no password hash
   async login(username, password) {
     if (!isNonEmptyString(username) || !isNonEmptyString(password)) {
       throw HttpError.badRequest(CONFIG.ERRORS.CREDENTIALS_REQUIRED);

@@ -11,8 +11,7 @@ const CONFIG = {
     COLLECTION: 'sessions'
   },
 
-  // Browsers can't add custom headers to cross-site form posts or <img> requests,
-  // so requiring this header on mutations blocks CSRF without a token
+  // required on mutations, cross-site forms can't send it
   CSRF_HEADER: { NAME: 'X-Requested-With', VALUE: 'XMLHttpRequest' },
 
   SSE: {

@@ -7,7 +7,7 @@ import UserRepository from '../src/db/userRepository.js';
 
 const articles = JSON.parse(await readFile(new URL('./articles.json', import.meta.url), 'utf8'));
 
-// Two accounts, so locking can be tried from two browsers
+// two users to try locking from two browsers
 const users = [
   { username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD },
   { username: process.env.EDITOR_USERNAME, password: process.env.EDITOR_PASSWORD }

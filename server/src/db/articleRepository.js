@@ -6,7 +6,7 @@ class ArticleRepository extends Repository {
     super(CONFIG.COLLECTIONS.ARTICLES);
   }
 
-  // Lock is held and has not expired yet
+  // locked and not expired
   heldBy(user) {
     return { 'lock.owner': user, 'lock.expiresAt': { $gt: new Date() } };
   }
@@ -15,8 +15,8 @@ class ArticleRepository extends Repository {
     return await this.findAll(filter, { createdAt: -1 });
   }
 
-  // Succeeds if the article is unlocked, the lock expired, or user already holds it (renewal).
-  // Checking and locking happen in one database call, so two users can't both get the lock.
+  // free, expired or already ours (renewal)
+  // one db call so two users can't both get it
   async acquireLock(id, user, ttlMs) {
     const now = new Date();
     const canLock = {
@@ -40,7 +40,7 @@ class ArticleRepository extends Repository {
     return await this.updateWhere(id, { 'lock.owner': user }, { $set: { lock: null } });
   }
 
-  // A successful save also releases the lock
+  // saving also releases the lock
   async updateLocked(id, user, requiredStatus, fields) {
     return await this.updateWhere(
       id,

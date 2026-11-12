@@ -2,9 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import request from 'supertest';
 
-// These checks are rejected before any database call, so they run without MongoDB
-// (express-session falls back to its in-memory store)
-// CONFIG reads env at import time, so set it before importing the app
+// these fail before hitting the db, so no mongo needed (in-memory session store)
+// set env before importing the app
 process.env.SESSION_SECRET ??= 'test-secret';
 const { createApp } = await import('../src/app.js');
 const app = createApp();

@@ -5,7 +5,7 @@ const controller = new AuthController();
 const router = express.Router();
 
 router.post('/login', controller.login);
-// No requireAuth: logging out with an already expired session must still succeed
+// no requireAuth: logout should work with an expired session too
 router.post('/logout', controller.logout);
 router.get('/me', controller.me);
 

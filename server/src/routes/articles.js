@@ -5,8 +5,7 @@ import requireAuth from '../middleware/requireAuth.js';
 const controller = new ArticleController();
 const router = express.Router();
 
-// Reads are public (the service hides non-published articles from anonymous users),
-// every change needs a logged-in user
+// reads are public, changes need login
 router.route('/')
   .get(controller.getAll)
   .post(requireAuth, controller.create);

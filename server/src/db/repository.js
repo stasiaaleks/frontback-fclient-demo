@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { getDB } from './connection.js';
 
-// Generic DAO: the only layer that talks to MongoDB directly
+// generic dao, the only place that talks to mongo
 class Repository {
   constructor(collectionName) {
     this.collectionName = collectionName;
@@ -11,7 +11,7 @@ class Repository {
     return getDB().collection(this.collectionName);
   }
 
-  // Invalid ids can't match any document, so callers get null -> 404 instead of a driver error
+  // invalid id -> null (404), not a driver error
   toObjectId(id) {
     return ObjectId.isValid(id) ? new ObjectId(id) : null;
   }
@@ -56,7 +56,7 @@ class Repository {
     return result.deletedCount;
   }
 
-  // Atomic conditional update: applies only if the document also matches conditions
+  // atomic: only updates if the conditions match
   async updateWhere(id, conditions, update) {
     const _id = this.toObjectId(id);
     if (!_id) return null;

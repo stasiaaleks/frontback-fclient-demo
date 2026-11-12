@@ -22,7 +22,7 @@ export const getDB = () => {
   return dbInstance;
 };
 
-// The session store reuses this connection instead of opening its own
+// reused by the session store
 export const getClient = () => {
   getDB();
   return client;

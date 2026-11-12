@@ -11,9 +11,7 @@ const router = express.Router();
 router.use(csrfGuard);
 router.use(express.json());
 
-// Express 5 leaves req.body undefined when there is no JSON body,
-// which would turn `req.body.username` into a 500 instead of a 400
-// https://github.com/expressjs/express/issues/6432
+// express 5 leaves req.body undefined without a json body (expressjs/express#6432)
 router.use((req, res, next) => {
   req.body ??= {};
   next();
@@ -23,7 +21,7 @@ router.use('/auth', authRoutes);
 router.use('/articles', articleRoutes);
 router.get('/events', eventsController.stream);
 
-// Unknown /api paths answer with JSON 404 instead of falling through to the SPA
+// json 404 for unknown /api paths instead of the spa
 router.use(() => {
   throw HttpError.notFound(CONFIG.ERRORS.ROUTE_NOT_FOUND);
 });

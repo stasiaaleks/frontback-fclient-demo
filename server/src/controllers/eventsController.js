@@ -3,8 +3,7 @@ import articleEvents from '../events/articleEvents.js';
 
 const { EVENT, HEARTBEAT_MS } = CONFIG.SSE;
 
-// Server-Sent Events: one long-lived response per tab, the server writes to it on every change.
-// The event carries no data; clients re-fetch JSON, so access rules stay in one place.
+// sse: events have no data, clients just refetch
 class EventsController {
   stream = (req, res) => {
     res.set({
@@ -16,7 +15,7 @@ class EventsController {
     res.write('retry: 3000\n\n');
 
     const onChange = () => res.write(`event: ${EVENT}\ndata: {}\n\n`);
-    // Comment lines keep proxies from closing an idle connection
+    // keepalive so proxies don't drop idle connections
     const heartbeat = setInterval(() => res.write(': ping\n\n'), HEARTBEAT_MS);
 
     articleEvents.on(EVENT, onChange);

@@ -3,7 +3,7 @@ import CONFIG from './constants/config.js';
 import { connectDB, getClient } from './db/connection.js';
 import { createApp } from './app.js';
 
-// The example value is public, so a session cookie signed with it could be forged
+// the example secret is public, don't run with it
 if (!CONFIG.SESSION.SECRET || CONFIG.SESSION.SECRET === 'change-me') {
   console.error('Set SESSION_SECRET to a long random string, see .env.example');
   process.exit(1);
@@ -12,7 +12,7 @@ if (!CONFIG.SESSION.SECRET || CONFIG.SESSION.SECRET === 'change-me') {
 try {
   await connectDB();
 
-  // Sessions live in MongoDB, so logins survive a server restart
+  // sessions in mongo survive restarts
   const sessionStore = MongoStore.create({
     client: getClient(),
     collectionName: CONFIG.SESSION.COLLECTION,

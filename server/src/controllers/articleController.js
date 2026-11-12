@@ -1,15 +1,11 @@
 import ArticleService from '../services/articleService.js';
 import CONFIG from '../constants/config.js';
 
-// The acting user comes from the session (set at login), never from the request body,
-// so a client can't act on someone else's lock. requireAuth guarantees it on mutations.
+// the user always comes from the session, never from the body
 const currentUser = (req) => req.session.user.username;
 
 class ArticleController {
-  // Handlers are arrow functions, not regular methods
-  // The router calls them (e.g. router.get('/', controller.getAll)),
-  // and a regular method called that way loses `this`, so `this.service` would be undefined
-  // Arrow functions always keep `this` pointing to the controller
+  // arrow functions so `this` still works when the router calls them
   service = new ArticleService();
 
   getAll = async (req, res) => {

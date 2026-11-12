@@ -7,7 +7,7 @@ const { DRAFT, PUBLISHED, ARCHIVED } = CONFIG.STATUS;
 
 const isNonEmptyString = (value) => typeof value === 'string' && value.trim() !== '';
 
-// Anonymous readers don't need to know who is editing what
+// hide locks from anonymous readers
 const toPublic = ({ lock, ...article }) => article;
 
 class ArticleService {
@@ -27,14 +27,12 @@ class ArticleService {
     return { title: title.trim(), author: author.trim(), content, tags: tags.map((tag) => tag.trim()) };
   }
 
-  // Every successful change is pushed to open browsers over SSE.
-  // No payload: the stream is public, so it must not reveal draft ids or who holds a lock
+  // notify browsers, no payload since the stream is public
   notify() {
     articleEvents.emit(CONFIG.SSE.EVENT);
   }
 
-  // Locked operations are a single conditional update
-  // When it matches nothing, show why
+  // single conditional update, if nothing matched figure out why
   async explainFailure(id, user, requiredStatus, statusMessage) {
     const article = await this.findOrThrow(id);
     const { lock } = article;
@@ -64,7 +62,7 @@ class ArticleService {
     return article;
   }
 
-  // viewer is the session user; without one only published articles are visible
+  // no viewer -> only published articles
   async getAllArticles(viewer) {
     if (viewer) {
       return await this.repository.findAllSorted();
@@ -78,7 +76,7 @@ class ArticleService {
     if (viewer) {
       return article;
     }
-    // 404, not 403: anonymous users shouldn't learn that a draft exists
+    // 404 not 403, don't reveal drafts
     if (article.status !== PUBLISHED) {
       throw HttpError.notFound(CONFIG.ERRORS.ARTICLE_NOT_FOUND);
     }

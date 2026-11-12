@@ -3,8 +3,7 @@ import HttpError from '../errors/httpError.js';
 
 const SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS'];
 
-// Second layer next to the SameSite=strict cookie: a cross-site <form> can't set custom headers,
-// and a cross-site fetch with one needs a CORS preflight, which this server never allows
+// extra csrf layer on top of SameSite=strict: cross-site forms can't set custom headers
 const csrfGuard = (req, res, next) => {
   const { NAME, VALUE } = CONFIG.CSRF_HEADER;
   if (!SAFE_METHODS.includes(req.method) && req.get(NAME) !== VALUE) {
