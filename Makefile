@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help install dev-server dev-client build start seed test db-up db-down db-reset db-shell
+.PHONY: help install dev-server dev-client build start seed test lint db-up db-down db-reset db-shell
 
 help:
 	@echo "Available targets:"
@@ -11,6 +11,7 @@ help:
 	@echo "  start      - Serve API + built app on one port (run build first)"
 	@echo "  seed       - Replace all articles and users with sample data"
 	@echo "  test       - Run server smoke tests"
+	@echo "  lint       - Lint server and client"
 	@echo "  db-up      - Start MongoDB container"
 	@echo "  db-down    - Stop MongoDB container"
 	@echo "  db-reset   - Reset MongoDB (delete data)"
@@ -37,6 +38,10 @@ seed:
 
 test:
 	npm --prefix server test
+
+lint:
+	npm --prefix server run lint
+	npm --prefix client run lint
 
 db-up:
 	docker compose up -d

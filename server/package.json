@@ -8,7 +8,8 @@
     "start": "node --env-file-if-exists=../.env src/server.js",
     "dev": "node --env-file-if-exists=../.env --watch src/server.js",
     "seed": "node --env-file-if-exists=../.env seed/seed.js",
-    "test": "node --test"
+    "test": "node --test",
+    "lint": "eslint ."
   },
   "license": "ISC",
   "dependencies": {
@@ -20,6 +21,9 @@
     "mongodb": "^6.18.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
     "supertest": "^7.1.0"
   }
 }
